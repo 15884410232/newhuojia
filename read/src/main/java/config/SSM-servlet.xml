@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task.xsd">
+	<!-- 设置使用注解的类所在的jar包 -->
+	<!-- <aop:config proxy-target-class="true" /> -->
+	<context:component-scan base-package="com" />
+
+	<mvc:resources mapping="/com/**" location="/com/" />
+
+	<mvc:annotation-driven>
+		<!-- 消息转换器 -->
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes" value="text/html;charset=UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean id="setUrl" class="com.test.interceptor.SetUrl">
+				<property name="excludeUrls">
+					<list>
+						<value>/loginPage</value>
+						<value>/loginCheck</value>
+						<value>/registerUser</value>
+						<value>/register</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor>
+		<!-- <mvc:interceptor> <mvc:mapping path="/**"/> <bean id="login" class="com.test.interceptor.Login"> 
+			<property name="excludeUrls"> <list> <value>/home</value> <value>/curl</value> 
+			<value>/registerUser/</value> <value>/register/</value> </list> </property> 
+			</bean> </mvc:interceptor> -->
+	</mvc:interceptors>
+
+	<!--定时任务 -->
+	<task:annotation-driven scheduler="qbScheduler" />
+	<task:scheduler id="qbScheduler" pool-size="10" />
+
+
+
+	<!-- 文件上传表单的视图解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="204800" />
+	</bean>
+
+
+    <!-- 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证 -->
+     <!-- <aop:config proxy-target-class="true"/> 打开会有冲突问题 --> 
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+</beans>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.DataMapper">
+    <select id="getData" resultType="java.util.Map" parameterType="java.lang.String">
+    	select * from data where xinghao=#{xinghao}
+    </select>
+    <select id="getHuojia" resultType="com.test.bean.Huojia">
+    	select * from huojia  limit #{offset},10
+    </select>
+    <select id="getCount" resultType="java.lang.String" parameterType="java.lang.String">
+    	select count(huojiaId) from huojia 
+    </select>
+    
+    <insert id="inserRecord" parameterType="java.util.Map">
+    	insert into record(time,xinghao,top,down,shuiwei,result)
+    	values(#{time},#{xinghao},#{top},#{down},#{shuiwei},#{result})
+    </insert>
+</mapper>

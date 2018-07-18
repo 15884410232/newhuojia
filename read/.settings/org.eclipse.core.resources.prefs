@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/test/controller/CaptchaUsernamePasswordToken.java=UTF-8
+encoding//src/main/java/config/redis.properties=UTF-8
+encoding//src/main/java/jdbc.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/changepwd.ftl=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/index.ftl=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/login.ftl=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/myloginfo.ftl=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/personInfo.ftl=UTF-8
+encoding//src/main/webapp/WEB-INF/ftl/table.ftl=UTF-8
